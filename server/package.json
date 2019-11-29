@@ -10,6 +10,7 @@
     "express-ip": "^1.0.3",
     "express-router": "0.0.1",
     "googleapis": "^39.2.0",
+    "mongoose": "^5.7.11",
     "morgan": "^1.8.2",
     "nodemon": "^1.12.1"
   },
