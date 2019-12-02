@@ -3,7 +3,10 @@ var Schema = mongoose.Schema;
 
 var scoreSchema = new Schema({
      name: String,
-     score: Number,
+     scoreOverTime: [{
+          score: Number,
+          timeStamp: { type: Date, default: Date.now }
+     }]
 });
 
 var score = mongoose.model("score", scoreSchema);

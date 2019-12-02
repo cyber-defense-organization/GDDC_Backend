@@ -12,6 +12,7 @@ var db = mongodb_conn_module.connect();
 
 //dbdepends
 var Score = require("./models/score")
+var Team = require("./models/team")
 
 const app = express()
 app.use(morgan('combined'))
@@ -30,6 +31,27 @@ app.get('/team', (req,res,next) => {
   })
 })
 
+
+app.get('/lastI/:teamName', (req,res,next) => {
+  var name = req.params.teamName;
+  Team //{'services.ICMP_Linux1':{$slice:[0, 3]}}
+    .findOne({ name: name } , 'services.ICMP_Linux1')
+    .where('services.ICMP_Linux1')
+    .sort({'ICMP_Linux1.status':-1})
+    .slice(0,3)
+    .exec(function(err, resp){
+      if(err){
+          console.log(err);
+      }
+      else{
+          res.send({
+            out: resp
+          })
+      }
+  })
+})
+
+// Random Comment
 
 app.get('/tokenIn/:token', (req,res,next) => {
   const ipInfo = req.ipInfo;
