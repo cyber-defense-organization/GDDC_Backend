@@ -23,8 +23,10 @@ app.use(cors())
 
 app.use(expressip().getIpInfoMiddleware);
 
-
-var rightToken = 'GDDC!' //Should be pulled from db and logged with datetime
+app.post('/login', (req,res,next)=>{
+  req.params.username;
+  req.params.password;
+  })
 
 app.get('/team', (req,res,next) => {
   res.send({
@@ -36,7 +38,38 @@ app.get('/team', (req,res,next) => {
 app.get('/teamInfo/:teamName' , (req,res,next) => {
   var name = req.params.teamName;
   sTeam
-  .findOne({name: name} , '')
+  .findOne({name: name} , '-password -_id -__v -name -score')
+  .exec(function(err, resp){
+    if(err){
+        console.log(err);
+    }
+    else{
+        res.send({
+          out: resp
+        })
+    }
+})
+})
+
+app.get('/teamScore/:teamName' , (req,res,next) => {
+  var name = req.params.teamName;
+  sTeam
+  .findOne({name: name} , 'score')
+  .exec(function(err, resp){
+    if(err){
+        console.log(err);
+    }
+    else{
+        res.send({
+          out: resp
+        })
+    }
+})
+})
+
+app.get('/teamScoreALL/' , (req,res,next) => {
+  sTeam
+  .find({} , '')
   .exec(function(err, resp){
     if(err){
         console.log(err);
@@ -67,37 +100,5 @@ app.get('/lastI/:teamName', (req,res,next) => {
       }
   })
 })
-
-
-
-app.get('/tokenIn/:token', (req,res,next) => {
-  const ipInfo = req.ipInfo;
-  var token = req.params.token;
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  var allHeaders = req.headers
-
-  if (token == rightToken) {
-    //Do somekinda random string generation
-    //Also store in database
-    rightToken = 'GDDC2'
-    nToken = rightToken
-    res.send({
-      msg: 'Token Validated!',
-      newToken: nToken,
-      tokenSent: token,
-      senderIp: ip
-    })
-  }
-  res.send({
-    msg: 'Token Not Validated!',
-    tokenSent: token,
-    senderIp: ip,
-    allHeaders: allHeaders,
-    ipInfo: ipInfo
-  })
-})
-
-
-
 
 app.listen(process.env.PORT || 8081)
