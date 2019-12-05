@@ -13,6 +13,84 @@ var teamSchema = new Schema({
      FTP_Score: Number,
      services: 
           [{   
+               // AD
+               AD_Linux1: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               AD_Linux2: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               AD_Windows1: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               AD_Windows2: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               AD_Windows98: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               // MYSQL
+               MYSQL_Linux1: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               MYSQL_Linux2: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               MYSQL_Windows1: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               MYSQL_Windows2: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               MYSQL_Windows98: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               // FTP
+               FTP_Linux1: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               FTP_Linux2: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               FTP_Windows1: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               FTP_Windows2: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
+               FTP_Windows98: [{
+                    timeStamp: {type: Date},
+                    status: {type: Boolean, default: false},
+                    error: String
+               }],
                //ICMP
                ICMP_Linux1: [{
                     timeStamp: {type: Date},
