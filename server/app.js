@@ -32,7 +32,8 @@ app.get('/team', (req,res,next) => {
   })
 })
 
-app.get('/teamT/:teamName' , (req,res,next) => {
+//Exploit waiting to happen but still here
+app.get('/teamInfo/:teamName' , (req,res,next) => {
   var name = req.params.teamName;
   sTeam
   .findOne({name: name} , '')
@@ -67,7 +68,7 @@ app.get('/lastI/:teamName', (req,res,next) => {
   })
 })
 
-// Random Comment
+
 
 app.get('/tokenIn/:token', (req,res,next) => {
   const ipInfo = req.ipInfo;
