@@ -71,7 +71,7 @@ app.get('/teamScore/:teamName' , (req,res,next) => {
 
 app.get('/teamScoreALL/' , (req,res,next) => {
   sTeam
-  .find({} , '')
+  .find({} , 'score')
   .exec(function(err, resp){
     if(err){
         console.log(err);
