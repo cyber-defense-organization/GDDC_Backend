@@ -177,7 +177,7 @@ app.get('/transaction/:teamName/:jwt/:item/:price', async(req, res, next) => {
                           user: "whiteteamstuffxd1@airmail.cc", // generated ethereal user
                           pass: "whiteteamstuffxd1"// generated ethereal password
                         }
-                      }).catch(console.error);
+                      })
                     
                       // send mail with defined transport object
                       let info = await transporter.sendMail({
@@ -185,7 +185,7 @@ app.get('/transaction/:teamName/:jwt/:item/:price', async(req, res, next) => {
                         to: "rekarger@gmail.com", // list of receivers
                         subject: "shop notification", // Subject line
                         text: "Team:" + name + " Purchased: " + item + " For: " + price // plain text body
-                      }).catch(console.error);
+                      })
     
                     sTeam.update({
                         name: name
