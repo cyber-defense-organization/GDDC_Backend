@@ -74,6 +74,26 @@ app.post('/login', async (req,res,next)=>{
     }
 })
 
+app.get('/givepoint/:teamName/:points' , (req,res,next) => {
+    var name = req.params.teamName;
+    var points = parseInt(req.params.points);
+    sTeam.update({
+        name: name
+    }, {
+        '$inc': {
+            shopScore: points,
+            score : points
+        }
+    }, function(err, affected, resp) {
+        if (err) {
+            console.log(err, resp)
+        }
+    });
+    res.send({
+        status : true
+    }) 
+  })
+
 app.get('/teamScore/:teamName' , (req,res,next) => {
   var name = req.params.teamName;
   sTeam
@@ -92,7 +112,8 @@ app.get('/teamScore/:teamName' , (req,res,next) => {
 
 app.get('/teamScoreALL/' , (req,res,next) => {
   sTeam
-  .find({} , 'score')
+  .find({} , 'score name -_id')
+  .sort({score: -1})
   .exec(function(err, resp){
     if(err){
         console.log(err);
