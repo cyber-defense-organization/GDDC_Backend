@@ -97,21 +97,21 @@ app.get('/team', (req, res, next) => {
 })
 
 //Exploit waiting to happen but still here
-app.get('/teamInfo/:teamName' , (req,res,next) => {
-  var name = req.params.teamName;
-  sTeam
-  .findOne({name: name} , '-password -_id -__v -name -score')
-  .exec(function(err, resp){
-    if(err){
-        console.log(err);
-    }
-    else{
-        res.send({
-          out: resp
-        })
-    }
-})
-})
+// app.get('/teamInfo/:teamName' , (req,res,next) => {
+//   var name = req.params.teamName;
+//   sTeam
+//   .findOne({name: name} , '-password -_id -__v -name -score')
+//   .exec(function(err, resp){
+//     if(err){
+//         console.log(err);
+//     }
+//     else{
+//         res.send({
+//           out: resp
+//         })
+//     }
+// })
+// })
 
 app.get('/teamScore/:teamName' , (req,res,next) => {
   var name = req.params.teamName;
@@ -159,7 +159,7 @@ app.get("/login/:username/:password", (req, res, next) => {
     }
 })
 
-//Exploit waiting to happen but still here
+// Exploit waiting to happen but still here
 app.get('/teamInfo/:teamName/:jwt', (req, res, next) => {
     var name = req.params.teamName;
     var jwt = req.params.jwt
@@ -167,16 +167,17 @@ app.get('/teamInfo/:teamName/:jwt', (req, res, next) => {
     console.log(jwt_decoded)
     if(jwt_decoded) {
         sTeam
-        .findOne({ name: name }, '')
-        .exec(function(err, resp) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send({
-                    out: resp
-                })
-            }
-        })
+        .findOne({name: name} , '-password -_id -__v -name -score')
+        .exec(function(err, resp){
+          if(err){
+              console.log(err);
+          }
+          else{
+              res.send({
+                out: resp
+              })
+          }
+      })
     } else {
         res.send({
             error : "invalid jwt"
