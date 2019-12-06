@@ -31,6 +31,17 @@ app.use(cors())
 
 app.use(expressip().getIpInfoMiddleware);
 
+function verifyJwt(token) {
+    var decoded_token = false;
+    jwt.verify(token, secret, (err, decoded) => {
+        if (!err) {
+            decoded_token = decoded;
+            next();
+        }
+      });
+    return decoded_token
+}
+
 app.post('/login', async (req,res,next)=>{
   var name = req.body.username;
   var pass = req.body.password; 
@@ -46,6 +57,7 @@ app.post('/login', async (req,res,next)=>{
             );
         res.send({
             jwtToken: token,
+            team : name,
             status : true
         })
     } else {
@@ -148,9 +160,13 @@ app.get("/login/:username/:password", (req, res, next) => {
 })
 
 //Exploit waiting to happen but still here
-app.get('/teamInfo/:teamName', (req, res, next) => {
+app.get('/teamInfo/:teamName/:jwt', (req, res, next) => {
     var name = req.params.teamName;
-    sTeam
+    var jwt = req.params.jwt
+    var jwt_decoded = verifyJwt(jwt)
+    console.log(jwt_decoded)
+    if(jwt_decoded) {
+        sTeam
         .findOne({ name: name }, '')
         .exec(function(err, resp) {
             if (err) {
@@ -161,6 +177,11 @@ app.get('/teamInfo/:teamName', (req, res, next) => {
                 })
             }
         })
+    } else {
+        res.send({
+            error : "invalid jwt"
+        })
+    }
 })
 
 app.get('/lastI/:teamName', (req, res, next) => {
