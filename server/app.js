@@ -162,27 +162,38 @@ app.get("/login/:username/:password", (req, res, next) => {
 // Exploit waiting to happen but still here
 app.get('/teamInfo/:teamName/:jwt', (req, res, next) => {
     var name = req.params.teamName;
-    var jwt = req.params.jwt
-    var jwt_decoded = verifyJwt(jwt)
-    console.log(jwt_decoded)
-    if(jwt_decoded) {
-        sTeam
-        .findOne({name: name} , '-password -_id -__v -name -score')
-        .exec(function(err, resp){
-          if(err){
-              console.log(err);
-          }
-          else{
-              res.send({
-                out: resp
+    var token = req.params.jwt
+    //var jwt_decoded = verifyJwt(jwt)
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            console.log(err)
+            res.send({
+                status: false,
+                msg: "invalid JWT"
+            })
+        }else{
+            //console.log(decoded.name)
+            if(decoded.name = name) {
+                sTeam
+                .findOne({name: name} , '-password -_id -__v -name -score')
+                .exec(function(err, resp){
+                  if(err){
+                      console.log(err);
+                  }
+                  else{
+                      res.send({
+                        out: resp
+                      })
+                  }
               })
-          }
-      })
-    } else {
-        res.send({
-            error : "invalid jwt"
-        })
-    }
+            } else {
+                res.send({
+                    error : "invalid jwt"
+                })
+            }
+        }
+      });
+    //console.log(jwt_decoded)
 })
 
 app.get('/lastI/:teamName', (req, res, next) => {
