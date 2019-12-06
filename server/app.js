@@ -198,15 +198,21 @@ app.get('/transaction/:teamName/:jwt/:item/:price', async(req, res, next) => {
                             console.log(err, resp)
                         }
                     });
+                } else {
+                    res.send({
+                        message : "not enough robux"
+                    })
                 }
-
             } else {
                 res.send({
-                    error : "invalid jwt"
+                    message : "invalid jwt"
                 })
             }
         }
       });
+      res.send({
+        message : "failure to buy"
+    })
 })
 
 // Exploit waiting to happen but still here
