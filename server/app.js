@@ -5,7 +5,7 @@ const morgan = require('morgan')
 var session = require('express-session')
 //express deps
 
-const nodemailer = require("f");
+const nodemailer = require("nodemailer");
 
 const fs   = require('fs');
 const jwt  = require('jsonwebtoken');
