@@ -5,6 +5,10 @@ const morgan = require('morgan')
 var session = require('express-session')
     //express deps
 
+    
+const fs   = require('fs');
+const jwt  = require('jsonwebtoken');
+
 const expressip = require('express-ip');
 
 //dbConnection
@@ -17,6 +21,8 @@ var Team = require("./models/team")
 var sTeam = require("./models/sTeam")
 var passwordHash = require('password-hash');
 
+var secret = "bb123#123morelike123#123bb"
+
 const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
@@ -25,10 +31,52 @@ app.use(cors())
 
 app.use(expressip().getIpInfoMiddleware);
 
-app.post('/login', (req,res,next)=>{
-  req.params.username;
-  req.params.password;
-  })
+app.post('/login', async (req,res,next)=>{
+  var name = req.body.username;
+  var pass = req.body.password; 
+  //console.log(name)
+  const foundUser = await sTeam.findOne({
+        name: name
+  }, 'password -_id')
+    if(foundUser.password == pass) {
+        let token = jwt.sign({name: name},
+            secret,
+            { expiresIn: '24h' // expires in 24 hours
+            }
+            );
+        res.send({
+            jwtToken: token,
+            status : true
+        })
+    } else {
+        res.send({
+            status : false
+        }) 
+    }
+  // console.log(foundUser)
+//   sTeam
+//   .findOne({name: name} , 'password')
+//   .exec(function(err, resp){
+//     if(err){
+//         console.log(err);
+//     }
+//     else{
+//         console.log(resp)
+//         console.log(pass)
+//         if(resp == pass) {
+//             let token = jwt.sign({name: name},
+//                 secret,
+//                 { expiresIn: '24h' // expires in 24 hours
+//                 }
+//               );
+//             res.send({
+//                 jwtToken: token
+//             })
+//         }
+//     }
+// })
+
+})
 
 app.get('/team', (req, res, next) => {
     res.send({
@@ -77,9 +125,9 @@ app.get('/teamScoreALL/' , (req,res,next) => {
         console.log(err);
     }
     else{
-        res.send({
-          out: resp
-        })
+            res.send({
+              out: resp
+            })
         }
     })
 })
