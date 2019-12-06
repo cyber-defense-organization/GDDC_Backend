@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 var session = require('express-session')
-    //express deps
+//express deps
 
     
 const fs   = require('fs');
@@ -27,20 +27,19 @@ const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
-    //output parser
 
-app.use(expressip().getIpInfoMiddleware);
+//app.use(expressip().getIpInfoMiddleware);
 
-function verifyJwt(token) {
-    var decoded_token = false;
-    jwt.verify(token, secret, (err, decoded) => {
-        if (!err) {
-            decoded_token = decoded;
-            next();
-        }
-      });
-    return decoded_token
-}
+// function verifyJwt(token) {
+//     var decoded_token = false;
+//     jwt.verify(token, secret, (err, decoded) => {
+//         if (!err) {
+//             decoded_token = decoded;
+//             next();
+//         }
+//       });
+//     return decoded_token
+// }
 
 app.post('/login', async (req,res,next)=>{
   var name = req.body.username;
@@ -65,58 +64,12 @@ app.post('/login', async (req,res,next)=>{
             status : false
         }) 
     }
-  // console.log(foundUser)
-//   sTeam
-//   .findOne({name: name} , 'password')
-//   .exec(function(err, resp){
-//     if(err){
-//         console.log(err);
-//     }
-//     else{
-//         console.log(resp)
-//         console.log(pass)
-//         if(resp == pass) {
-//             let token = jwt.sign({name: name},
-//                 secret,
-//                 { expiresIn: '24h' // expires in 24 hours
-//                 }
-//               );
-//             res.send({
-//                 jwtToken: token
-//             })
-//         }
-//     }
-// })
-
 })
-
-app.get('/team', (req, res, next) => {
-    res.send({
-        Hello: 'Boi'
-    })
-})
-
-//Exploit waiting to happen but still here
-// app.get('/teamInfo/:teamName' , (req,res,next) => {
-//   var name = req.params.teamName;
-//   sTeam
-//   .findOne({name: name} , '-password -_id -__v -name -score')
-//   .exec(function(err, resp){
-//     if(err){
-//         console.log(err);
-//     }
-//     else{
-//         res.send({
-//           out: resp
-//         })
-//     }
-// })
-// })
 
 app.get('/teamScore/:teamName' , (req,res,next) => {
   var name = req.params.teamName;
   sTeam
-  .findOne({name: name} , 'score')
+  .findOne({name: name} , 'score shopScore')
   .exec(function(err, resp){
     if(err){
         console.log(err);
@@ -142,21 +95,6 @@ app.get('/teamScoreALL/' , (req,res,next) => {
             })
         }
     })
-})
-
-
-app.get("/login/:username/:password", (req, res, next) => {
-    var password = req.params.password;
-    var username = req.params.username
-    const foundUser = sTeam.findOne({
-        name: username
-    })
-    var foundPassword = foundUser["password"]
-    console.log(foundPassword)
-    var hashedPassword = passwordHash.generate(password);
-    if (passwordHash.verify(password, password)) {
-
-    }
 })
 
 // Exploit waiting to happen but still here
