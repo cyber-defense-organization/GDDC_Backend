@@ -5,7 +5,8 @@ const morgan = require('morgan')
 var session = require('express-session')
 //express deps
 
-    
+const nodemailer = require("nodemailer");
+
 const fs   = require('fs');
 const jwt  = require('jsonwebtoken');
 
@@ -40,6 +41,13 @@ app.use(cors())
 //       });
 //     return decoded_token
 // }
+
+async function getCurrentShopScore(team) {
+    const score = await sTeam.findOne({
+        name: team
+    }, "shopScore")
+    return score.shopScore
+}
 
 app.post('/login', async (req,res,next)=>{
   var name = req.body.username;
@@ -97,6 +105,89 @@ app.get('/teamScoreALL/' , (req,res,next) => {
     })
 })
 
+app.get('/shopScore/:teamName/:jwt', (req, res, next) => {
+    var name = req.params.teamName;
+    var token = req.params.jwt
+    jwt.verify(token, secret, async (err, decoded) => {
+        if (err) {
+            console.log(err)
+            res.send({
+                status: false,
+                msg: "invalid JWT"
+            })
+        }else{
+            if(name == decoded.name ) {
+                var score = await getCurrentShopScore(name)
+                res.send({
+                    status : true,
+                    score : score
+                })
+            } else {
+                res.send({
+                    error : "invalid jwt"
+                })
+            }
+        }
+      });
+})
+
+app.get('/transaction/:teamName/:jwt/:item/:price', async(req, res, next) => {
+    var name = req.params.teamName;
+    var token = req.params.jwt
+    var item = req.params.item
+    var price = req.params.price
+    jwt.verify(token, secret, async (err, decoded) => {
+        if (err) {
+            console.log(err)
+            res.send({
+                status: false,
+                msg: "invalid JWT"
+            })
+        }else{
+            //console.log(decoded.name)
+            if(decoded.name == name) {
+                var score = await getCurrentShopScore(name)
+                if(price <= score) {
+                    let transporter = nodemailer.createTransport({
+                        host: "mail.cock.li",
+                        port: 465,
+                        secure: true, // true for 465, false for other ports
+                        auth: {
+                          user: "whiteteamstuffxd1@airmail.cc", // generated ethereal user
+                          pass: "whiteteamstuffxd1"// generated ethereal password
+                        }
+                      });
+                    
+                      // send mail with defined transport object
+                      let info = await transporter.sendMail({
+                        from: '"white team" <whiteteamstuffxd1@airmail.cc>', // sender address
+                        to: "rekarger@gmail.com", // list of receivers
+                        subject: "shop notification", // Subject line
+                        text: "Team:" + name + " Purchased: " + item + " For: " + price // plain text body
+                      });
+    
+                    sTeam.update({
+                        name: name
+                    }, {
+                        '$inc': {
+                            shopScore: parseInt(price)*-1
+                        }
+                    }, function(err, affected, resp) {
+                        if (err) {
+                            console.log(err, resp)
+                        }
+                    });
+                }
+
+            } else {
+                res.send({
+                    error : "invalid jwt"
+                })
+            }
+        }
+      });
+})
+
 // Exploit waiting to happen but still here
 app.get('/teamInfo/:teamName/:jwt', (req, res, next) => {
     var name = req.params.teamName;
@@ -113,7 +204,7 @@ app.get('/teamInfo/:teamName/:jwt', (req, res, next) => {
             //console.log(decoded.name)
             if(decoded.name = name) {
                 sTeam
-                .findOne({name: name} , '-password -_id -__v -name -score')
+                .findOne({name: name} , '-password -_id -__v -name -score -shopScore')
                 .exec(function(err, resp){
                   if(err){
                       console.log(err);
