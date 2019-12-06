@@ -198,6 +198,9 @@ app.get('/transaction/:teamName/:jwt/:item/:price', async(req, res, next) => {
                             console.log(err, resp)
                         }
                     });
+                    res.send({
+                        message : "successfully bought item"
+                    })
                 } else {
                     res.send({
                         message : "not enough robux"
