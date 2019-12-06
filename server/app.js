@@ -213,9 +213,6 @@ app.get('/transaction/:teamName/:jwt/:item/:price', async(req, res, next) => {
             }
         }
       });
-      res.send({
-        message : "failure to buy"
-    })
 })
 
 // Exploit waiting to happen but still here
