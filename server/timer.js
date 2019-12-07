@@ -1,10 +1,18 @@
 const axios = require('axios');
 
-var poll_seconds = 10
+var poll_seconds = 30
 
 var teamWorkers = [
-    "1982.1.1.0:8032",
-    "1982.1.1.0:8039"
+    "127.0.0.1:8082",
+    "127.0.0.1:8083",
+    "127.0.0.1:8084",
+    "127.0.0.1:8085",
+    "127.0.0.1:8086",
+    "127.0.0.1:8087",
+    "127.0.0.1:8088",
+    "127.0.0.1:8089",
+    "127.0.0.1:8090",
+    "127.0.0.1:8091",
 ]
 
 var services = [
@@ -26,7 +34,7 @@ function poll() {
             .then(function (response) {
             })
             .catch(function (error) {
-           //   console.log(error);
+                console.log(index + ": error :" + error);
             })
         }
     }
