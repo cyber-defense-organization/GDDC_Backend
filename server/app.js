@@ -170,21 +170,21 @@ app.get('/transaction/:teamName/:jwt/:item/:price', async(req, res, next) => {
                 var score = await getCurrentShopScore(name)
                 if(price <= score) {
                     let transporter = nodemailer.createTransport({
-                        host: "mail.cock.li",
+                        host: "smtp.gmail.com",
                         port: 465,
                         secure: true, // true for 465, false for other ports
                         auth: {
-                          user: "whiteteamstuffxd1@airmail.cc", // generated ethereal user
-                          pass: "whiteteamstuffxd1"// generated ethereal password
+                          user: "gddcwhiteteam@gmail.com", // generated ethereal user
+                          pass: "DigitalDane"// generated ethereal password
                         }
                       })
                     
                       // send mail with defined transport object
                       let info = await transporter.sendMail({
-                        from: '"white team" <whiteteamstuffxd1@airmail.cc>', // sender address
-                        to: "rekarger@gmail.com", // list of receivers
+                        from: '"white team" <gddcwhiteteam@gmail.com>', // sender address
+                        to: "gddcwhiteteam@gmail.com", // list of receivers
                         subject: "shop notification", // Subject line
-                        text: "Team:" + name + " Purchased: " + item + " For: " + price // plain text body
+                        text: "Team: " + name + " Purchased: " + item + " For: " + price // plain text body
                       })
     
                     sTeam.update({

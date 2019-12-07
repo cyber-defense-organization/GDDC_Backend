@@ -8,7 +8,7 @@ var teamWorkers = [
 ]
 
 var services = [
-    "MYSQL_ALL",
+    "SQL_ALL",
     "AD_ALL",
     "DNS_ALL",
     "ICMP_ALL",
