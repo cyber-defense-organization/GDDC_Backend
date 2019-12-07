@@ -17,7 +17,7 @@ var teamWorkers = [
 
 var services = [
     "SQL_ALL",
-    "AD_ALL",
+ //   "AD_ALL",
     "DNS_ALL",
     "ICMP_ALL",
     "WEB_ALL",
